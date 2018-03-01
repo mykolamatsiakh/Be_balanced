@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context="com.spe.bebalanced.bebalanced.MainActivity">
+
+    <com.ultramegasoft.radarchart.RadarView
+        android:id="@+id/radar"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/button_edit"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@+id/radar"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/button_shape"
+        android:text="Розрахувати навики"
+        android:textColor="#ffffff" />
+
+    <com.ultramegasoft.radarchart.RadarEditWidget
+        android:id="@+id/edit_widget"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        app:showButtonBar="true" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@drawable/button_shape"/>
+
+    <!--<com.jjoe64.graphview.GraphView-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dip"-->
+        <!--android:id="@+id/graph" />-->
+
+</RelativeLayout>
