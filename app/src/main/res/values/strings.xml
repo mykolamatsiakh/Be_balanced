@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Be balanced</string>
+    <string-array name="types_of_statistics">
+        <item>Статистика по всіх навиках</item>
+        <item>Статистика по кожному навику</item>
+    </string-array>
 </resources>

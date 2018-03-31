@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/skills_item"
+        android:icon="@drawable/ic_radar_chart_with_pentagon_shape"
+        android:title="Навики"/>
+    <item
+        android:id="@+id/statistics_item"
+        android:icon="@drawable/ic_graph"
+        android:title="Статистика"/>
+
+</menu>

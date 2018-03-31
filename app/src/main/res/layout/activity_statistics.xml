@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context="com.spe.bebalanced.bebalanced.StatisticsActivity">
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:entries="@array/types_of_statistics" />
+
+    <com.jjoe64.graphview.GraphView
+        android:layout_marginTop="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:id="@+id/graph"
+        android:visibility="visible"    />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@drawable/action_bar"
+        app:itemTextColor="@color/DarkGreen"
+        app:itemIconTint="@color/DarkGreen"
+        app:menu="@menu/bottom_navigation_items"/>
+
+</RelativeLayout>

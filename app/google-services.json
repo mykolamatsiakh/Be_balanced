@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "444687081960",
+    "project_id": "firebase-be-balanced"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444687081960:android:ddd77fbda9dd416b",
+        "android_client_info": {
+          "package_name": "com.spe.roseofwinds.roseofwinds"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "444687081960-7318o0ddig75hh5s1vhpf5asjfhf9a33.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "444687081960-i5n6hk2h4b79n8811c7r6s9clvfhbspo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.spe.roseofwinds.roseofwinds",
+            "certificate_hash": "a68c0c19905aec1dc1c96d1bee60e67046a42ea6"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDT-lAYqKdPzE2B1AV9vOfhR2z4iljygOY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

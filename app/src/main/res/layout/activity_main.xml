@@ -9,28 +9,43 @@
 
     <com.ultramegasoft.radarchart.RadarView
         android:id="@+id/radar"
+        android:layout_marginTop="100dp"
         android:layout_width="400dp"
-        android:layout_height="400dp"
+        android:layout_height="wrap_content"
+        android:scaleX="1.2"
+        android:scaleY="1.2"
         android:layout_gravity="center_horizontal"/>
 
     <Button
         android:id="@+id/button_edit"
-        android:layout_width="150dp"
+        android:layout_width="250dp"
         android:layout_height="40dp"
         android:layout_alignBottom="@+id/radar"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/button_shape"
+        android:visibility="invisible"
         android:text="Розрахувати навики"
         android:textColor="#ffffff" />
 
     <com.ultramegasoft.radarchart.RadarEditWidget
         android:id="@+id/edit_widget"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="220dp"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        app:showButtonBar="true" />
+        android:visibility="visible"
+        app:textColor="#000000"
+        android:layout_marginBottom="60dp"
+        app:showButtonBar="true" >
+
+        <!--<Button-->
+            <!---->
+            <!--android:layout_width="80dp"-->
+            <!--android:layout_height="80dp"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_weight="1" />-->
+
+    </com.ultramegasoft.radarchart.RadarEditWidget>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -38,12 +53,9 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:background="@drawable/button_shape"/>
-
-    <!--<com.jjoe64.graphview.GraphView-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="200dip"-->
-        <!--android:id="@+id/graph" />-->
+        android:background="@drawable/action_bar"
+        app:itemTextColor="@color/DarkGreen"
+        app:itemIconTint="@color/DarkGreen"
+        app:menu="@menu/bottom_navigation_items"/>
 
 </RelativeLayout>
