@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,10 +7,22 @@
     android:orientation="vertical"
     tools:context="com.spe.bebalanced.bebalanced.MainActivity">
 
+
+    <TextView
+        android:id="@+id/advice_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textAlignment="textStart"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_marginTop="70dp"/>
+
     <com.ultramegasoft.radarchart.RadarView
         android:id="@+id/radar"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:layout_width="400dp"
+        app:layout_constraintTop_toBottomOf="@id/advice_text_view"
         android:layout_height="wrap_content"
         android:scaleX="1.2"
         android:scaleY="1.2"
@@ -20,9 +32,10 @@
         android:id="@+id/button_edit"
         android:layout_width="250dp"
         android:layout_height="40dp"
-        android:layout_alignBottom="@+id/radar"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/radar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:gravity="center_horizontal"
         android:background="@drawable/button_shape"
         android:visibility="invisible"
         android:text="Розрахувати навики"
@@ -32,10 +45,9 @@
         android:id="@+id/edit_widget"
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:layout_alignParentBottom="true"
         android:visibility="visible"
         app:textColor="#000000"
-        android:layout_marginBottom="60dp"
+        app:layout_constraintBottom_toTopOf="@id/navigation"
         app:showButtonBar="true" >
 
         <!--<Button-->
@@ -51,11 +63,13 @@
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
         android:background="@drawable/action_bar"
-        app:itemTextColor="@color/DarkGreen"
         app:itemIconTint="@color/DarkGreen"
-        app:menu="@menu/bottom_navigation_items"/>
+        app:itemTextColor="@color/DarkGreen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_navigation_items"
+        tools:layout_editor_absoluteY="501dp" />
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

@@ -25,7 +25,10 @@ import com.ultramegasoft.radarchart.RadarEditWidget;
 import com.ultramegasoft.radarchart.RadarHolder;
 import com.ultramegasoft.radarchart.RadarView;
 
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     Animation mEditInAnimation;
     Button mButton;
     TextView mTextView;
+    TextView mLevelOfSkill;
     SeekBar mSeekbar;
     protected BottomNavigationView navigationView;
 
@@ -46,14 +50,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @NonNull
     private ArrayList<RadarHolder> mData = new ArrayList<RadarHolder>() {
         {
-            add(new RadarHolder("Тіло", 3));
-            add(new RadarHolder("Оточення", 4));
-            add(new RadarHolder("Стосунки", 4));
-            add(new RadarHolder("Кар'єра", 4));
-            add(new RadarHolder("Гроші", 2));
-            add(new RadarHolder("Саморозвиток", 2));
-            add(new RadarHolder("Сенс", 2));
-            add(new RadarHolder("Відпочинок", 2));
+            add(new RadarHolder("Тіло", 5));
+            add(new RadarHolder("Оточення", 5));
+            add(new RadarHolder("Стосунки", 5));
+            add(new RadarHolder("Кар'єра", 5));
+            add(new RadarHolder("Гроші", 5));
+            add(new RadarHolder("Саморозвиток", 5));
+            add(new RadarHolder("Сенс", 5));
+            add(new RadarHolder("Відпочинок", 5));
 
         }
     };
@@ -65,14 +69,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        String[] array = getResources().getStringArray(R.array.advices);
+        final List<String> mainParams = Arrays.asList(
+            "Тіло",
+            "Оточення",
+            "Стосунки", "Кар'єра", "Гроші", "Саморозвиток", "Сенс", "Відпочинок");
+        final List<String> resultOptions = Arrays.asList(array);
         mRadarView = findViewById(R.id.radar);
         mEditWidget = findViewById(R.id.edit_widget);
         mRadarView.setData(mData);
         mRadarView.setOnClickListener(this);
-        mRadarView.setMaxValue(10);
-        mRadarView.setTop(10);
+        mRadarView.setMaxValue(9);
+        mRadarView.setBottom(0);
         navigationView = findViewById(R.id.navigation);
+        mTextView=findViewById(R.id.advice_text_view);
         navigationView.setOnNavigationItemSelectedListener(this);
         findViewById(R.id.rew_button_back);
         mButton = findViewById(R.id.button_edit);
@@ -91,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             public void onSwipeTop(){
             }
             public void onSwipeRight(){
+                //Log.e(mRadarView.getSelectedName(), String.valueOf(mData.get(mRadarView.getSelectedIndex()).value));
                 mRadarView.turnCCW();
             }
             public void onSwipeLeft() {
@@ -102,12 +113,39 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Button mButtonSave = findViewById(R.id.rew_button_save);
         Button mButtonCancel = findViewById(R.id.rew_button_cancel);
         SeekBar mSeekBar = findViewById(R.id.rew_slider);
+
         mButtonCancel.setVisibility(View.INVISIBLE);
         mButtonSave.setText("Зберегти");
         mEditWidget.setVisibility(View.VISIBLE);
         mEditWidget.setShowButtonBar(true);
         mEditWidget.setBackgroundColor(getResources().getColor(R.color.colorWhite));
         // Set the callbacks for the RadarEditWidget buttons.
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean fromUser) {
+                final int scale = 100 / mRadarView.getMaxValue();
+
+                if(fromUser) {
+                    final int value = Math.round(i / scale);
+                    mRadarView.setSelectedValue(value);
+                    int mainPointValue = mainParams.indexOf(mRadarView.getSelectedName());
+                    int subpointValue = mRadarView.getSelectedValue();
+
+//                    Log.d("message", String.valueOf(resultOptions.get(mainPointValue * 10 + subpointValue)));
+                    mTextView.setText(String.valueOf(i/10) + " - " +
+                            String.valueOf(resultOptions.get(mainPointValue * 10 + subpointValue)));
+                }
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+            }
+
+        );
         mEditWidget.setOnButtonClickListener(new RadarEditWidget.OnButtonClickListener() {
             @Override
             public void onSave() {
@@ -168,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             // Enable interactive mode.
             mRadarView.setInteractive(true);
 
-
+            Log.e("action", mRadarView.getSelectedName());
             // Show the RadarEditWidget.
             mEditWidget.startAnimation(mEditInAnimation);
             mEditWidget.setVisibility(View.VISIBLE);
