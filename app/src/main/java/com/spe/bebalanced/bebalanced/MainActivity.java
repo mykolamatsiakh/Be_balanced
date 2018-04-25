@@ -21,11 +21,16 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.spe.bebalanced.bebalanced.database.Skill;
+import com.spe.bebalanced.bebalanced.database.SkillDataResource;
+import com.spe.bebalanced.bebalanced.database.SkillRepository;
+import com.spe.bebalanced.bebalanced.database.SkillRoomDatabase;
 import com.ultramegasoft.radarchart.RadarEditWidget;
 import com.ultramegasoft.radarchart.RadarHolder;
 import com.ultramegasoft.radarchart.RadarView;
 
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     TextView mLevelOfSkill;
     SeekBar mSeekbar;
     protected BottomNavigationView navigationView;
+
+    List<Skill> mSkillList;
+    private SkillRepository mSkillRepository;
 
     /**
      * The animation to use when hiding the RadarEditWidget
@@ -69,6 +77,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SkillRoomDatabase skillRoomDatabase = SkillRoomDatabase.getInstance(this);
+        mSkillRepository = SkillRepository.getInstance(SkillDataResource.getInstance(skillRoomDatabase.skillDao()));
+
         String[] array = getResources().getStringArray(R.array.advices);
         final List<String> mainParams = Arrays.asList(
             "Тіло",
@@ -147,12 +159,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         );
         mEditWidget.setOnButtonClickListener(new RadarEditWidget.OnButtonClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onSave() {
                 mData = mRadarView.getData();
                 Log.d("VALUE IS: ", String.valueOf(mData.get(1).value));
                 setEditMode(false);
                 mButton.setVisibility(View.VISIBLE);
+                LocalDate today = LocalDate.now();
+                String month = String.valueOf(today.getMonthValue());
+                String day = String.valueOf(today.getDayOfMonth());
+                String todayDate = month+ "/"+day;
+                Log.d("DATE IS", todayDate);
+//                Skill skill = new Skill(mData.get(1).name, mData.get(1).value, )
+//                mSkillRepository.insert(skill);
 
             }
 
@@ -181,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
    }
+
 
 
 
