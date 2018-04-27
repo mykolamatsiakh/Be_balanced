@@ -10,11 +10,11 @@ import android.content.Context;
  * Copyright (c) 2017, Reynolds. All rights reserved.
  */
 @Database(entities = {Skill.class}, version = 1)
-public abstract class SkillRoomDatabase extends RoomDatabase{
+public abstract class SkillRoomDatabase extends RoomDatabase {
+
     public abstract SkillDao skillDao();
 
     private static SkillRoomDatabase INSTANCE;
-
 
     public static SkillRoomDatabase getInstance( Context context) {
         if (INSTANCE == null) {

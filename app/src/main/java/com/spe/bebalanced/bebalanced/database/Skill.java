@@ -5,9 +5,6 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
-import java.util.Date;
 
 /**
  * Created by Mykola Matsiakh on 21.04.18.
@@ -16,24 +13,18 @@ import java.util.Date;
 @Entity(tableName = "skills_table")
 public class Skill {
 
-
-    @NonNull
     @PrimaryKey
     @ColumnInfo(name = "id")
-
     private int mId;
 
     @ColumnInfo(name = "name")
     private String mName;
 
-
     @ColumnInfo(name = "value")
     private int mValue;
 
-
     @ColumnInfo(name = "date")
     private String mDate;
-
 
     public String getName() {
         return mName;

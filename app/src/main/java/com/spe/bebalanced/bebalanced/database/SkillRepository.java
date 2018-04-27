@@ -1,12 +1,8 @@
 package com.spe.bebalanced.bebalanced.database;
 
-import android.app.Application;
-import android.arch.lifecycle.LiveData;
-import android.os.AsyncTask;
+import io.reactivex.Flowable;
 
 import java.util.List;
-
-import io.reactivex.Flowable;
 
 /**
  * Created by Mykola Matsiakh on 21.04.18.
@@ -20,13 +16,12 @@ public class SkillRepository implements iSkillDataResource{
         this.mLocalDatasource = mLocalDataSource;
     }
 
-    public static SkillRepository getInstance(iSkillDataResource mLocalDataSource) {
+    public static SkillRepository getInstance(iSkillDataResource skillDataResource) {
         if (mInstance == null){
-            mInstance = new SkillRepository(mLocalDataSource);
+            mInstance = new SkillRepository(skillDataResource);
         }
         return mInstance;
     }
-
 
     @Override
     public Flowable<List<Skill>> getAll() {
@@ -36,11 +31,6 @@ public class SkillRepository implements iSkillDataResource{
     @Override
     public Flowable<Skill> findByName(String name) {
         return mLocalDatasource.findByName(name);
-    }
-
-    @Override
-    public Flowable<List<Skill>> getDate() {
-        return mLocalDatasource.getDate();
     }
 
     @Override

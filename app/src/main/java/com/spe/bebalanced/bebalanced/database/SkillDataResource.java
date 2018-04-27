@@ -1,10 +1,8 @@
 package com.spe.bebalanced.bebalanced.database;
 
-import android.arch.lifecycle.LiveData;
+import io.reactivex.Flowable;
 
 import java.util.List;
-
-import io.reactivex.Flowable;
 
 /**
  * Created by Mykola Matsiakh on 24.04.18.
@@ -35,11 +33,6 @@ public class SkillDataResource implements iSkillDataResource{
     @Override
     public Flowable<Skill> findByName(String name) {
         return mSkillDao.findByName(name);
-    }
-
-    @Override
-    public Flowable<List<Skill>> getDate() {
-        return mSkillDao.getDate();
     }
 
     @Override

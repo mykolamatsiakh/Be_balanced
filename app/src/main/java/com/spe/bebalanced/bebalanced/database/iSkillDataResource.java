@@ -1,11 +1,8 @@
 package com.spe.bebalanced.bebalanced.database;
 
-import android.arch.lifecycle.LiveData;
-
-import java.util.Date;
-import java.util.List;
-
 import io.reactivex.Flowable;
+
+import java.util.List;
 
 /**
  * Created by Mykola Matsiakh on 24.04.18.
@@ -15,8 +12,6 @@ public interface iSkillDataResource {
     Flowable<List<Skill>> getAll();
 
     Flowable<Skill> findByName(String name);
-
-    Flowable<List<Skill>> getDate();
 
     void insertAll(List<Skill> skill);
 
