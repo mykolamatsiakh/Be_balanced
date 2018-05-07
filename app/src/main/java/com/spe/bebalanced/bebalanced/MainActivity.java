@@ -1,6 +1,9 @@
 package com.spe.bebalanced.bebalanced;
 
+import android.annotation.SuppressLint;
+import android.arch.persistence.room.Room;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -35,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     RadarEditWidget mEditWidget;
@@ -42,12 +47,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     Animation mEditInAnimation;
     Button mButton;
     TextView mTextView;
-    TextView mLevelOfSkill;
-    SeekBar mSeekbar;
     protected BottomNavigationView navigationView;
 
+    SkillRoomDatabase mSkillRoomDatabase;
     List<Skill> mSkillList;
-    private SkillRepository mSkillRepository;
 
     /**
      * The animation to use when hiding the RadarEditWidget
@@ -72,20 +75,32 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
 
+    @SuppressLint("CheckResult")
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        SkillRoomDatabase skillRoomDatabase = SkillRoomDatabase.getInstance(this);
-        mSkillRepository = SkillRepository.getInstance(SkillDataResource.getInstance(skillRoomDatabase.skillDao()));
-
+        mSkillRoomDatabase = Room.databaseBuilder(getApplicationContext(),
+                SkillRoomDatabase.class, "skill_database").build();
+        Flowable<List<Skill>> skill =  mSkillRoomDatabase.skillDao().getAll();
+        Log.d("BEM", skill.toString());
         String[] array = getResources().getStringArray(R.array.advices);
         final List<String> mainParams = Arrays.asList(
             "Тіло",
             "Оточення",
             "Стосунки", "Кар'єра", "Гроші", "Саморозвиток", "Сенс", "Відпочинок");
+
+        mSkillRoomDatabase.skillDao().getAll().flatMap(list -> {
+            Skill[] skills = new Skill[list.size()];
+            list.toArray(skills);
+            return Flowable.fromArray(skills);
+        }).subscribe(item -> {
+            // Now you can do with each item.
+            Log.d("Item is", item.toString());
+
+        });
+
         final List<String> resultOptions = Arrays.asList(array);
         mRadarView = findViewById(R.id.radar);
         mEditWidget = findViewById(R.id.edit_widget);
@@ -163,16 +178,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             @Override
             public void onSave() {
                 mData = mRadarView.getData();
-                Log.d("VALUE IS: ", String.valueOf(mData.get(1).value));
                 setEditMode(false);
                 mButton.setVisibility(View.VISIBLE);
-                LocalDate today = LocalDate.now();
-                String month = String.valueOf(today.getMonthValue());
-                String day = String.valueOf(today.getDayOfMonth());
-                String todayDate = month+ "/"+day;
-                Log.d("DATE IS", todayDate);
-//                Skill skill = new Skill(mData.get(1).name, mData.get(1).value, )
-//                mSkillRepository.insert(skill);
+                new DatabaseAsync().execute();
+//                LocalDate today = LocalDate.now();
+//                String month = String.valueOf(today.getMonthValue());
+//                String day = String.valueOf(today.getDayOfMonth());
+
 
             }
 
@@ -201,6 +213,37 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
    }
+
+    private class DatabaseAsync extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            //Perform pre-adding operation here.
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            //Let's add some dummy data to the database.
+            java.util.Date currentTime = java.util.Calendar.getInstance().getTime();
+            String date = currentTime.toString().substring(8,10)+"/"+currentTime.getMonth();
+            for (int i=0; i< mData.size(); i++) {
+                Skill skill = new Skill(mData.get(i).name, mData.get(i).value, date);
+                mSkillRoomDatabase.skillDao().insert(skill);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            //To after addition operation here.
+        }
+    }
+
+
 
 
 

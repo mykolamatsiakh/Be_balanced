@@ -13,12 +13,23 @@
         android:layout_height="80dp"
         android:entries="@array/types_of_statistics" />
 
-    <com.jjoe64.graphview.GraphView
-        android:layout_marginTop="60dp"
+    <!--<com.jjoe64.graphview.GraphView-->
+        <!--android:layout_marginTop="60dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="400dp"-->
+        <!--android:id="@+id/graph"-->
+        <!--android:visibility="visible"    />-->
+
+    <com.androidplot.xy.XYPlot
+        style="@style/APDefacto.Dark"
+        android:id="@+id/plot"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:id="@+id/graph"
-        android:visibility="visible"    />
+        app:title="A Simple XY Plot"
+        app:rangeTitle="range"
+        app:domainTitle="domain"
+        app:lineLabels="left|bottom"
+        app:lineLabelRotationBottom="-45"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

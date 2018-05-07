@@ -1,5 +1,7 @@
 package com.spe.bebalanced.bebalanced.database;
 
+import android.os.AsyncTask;
+
 import io.reactivex.Flowable;
 
 import java.util.List;
@@ -50,6 +52,22 @@ public class SkillRepository implements iSkillDataResource{
     @Override
     public void delete(Skill skill) {
         mLocalDatasource.delete(skill);
+    }
+
+    private static class insertAsyncTask extends AsyncTask<Skill, Void, Void> {
+
+        private SkillDao mAsyncTaskDao;
+
+        insertAsyncTask(SkillDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+
+        @Override
+        protected Void doInBackground(final Skill... skills) {
+            mAsyncTaskDao.insert(skills);
+            return null;
+        }
     }
 
 }

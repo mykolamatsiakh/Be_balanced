@@ -13,7 +13,7 @@ import android.support.annotation.NonNull;
 @Entity(tableName = "skills_table")
 public class Skill {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int mId;
 
