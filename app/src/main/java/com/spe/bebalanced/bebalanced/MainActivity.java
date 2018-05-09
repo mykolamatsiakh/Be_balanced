@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             Log.d("Item is", item.toString());
 
         });
+        
 
         final List<String> resultOptions = Arrays.asList(array);
         mRadarView = findViewById(R.id.radar);
