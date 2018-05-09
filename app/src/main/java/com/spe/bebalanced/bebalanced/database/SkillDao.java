@@ -5,7 +5,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
-import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 import java.util.List;
 
@@ -18,10 +18,10 @@ import java.util.List;
 public interface SkillDao {
 
     @Query("SELECT * FROM skills_table")
-    Flowable<List<Skill>> getAll();
+    Single<List<Skill>> getAll();
 
     @Query("SELECT * FROM skills_table WHERE name = :name")
-    Flowable<Skill> findByName(String name);
+    Single<Skill> findByName(String name);
 
     @Insert
     void insert(Skill... skill);

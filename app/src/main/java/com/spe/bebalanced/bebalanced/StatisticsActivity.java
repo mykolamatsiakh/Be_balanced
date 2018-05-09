@@ -2,10 +2,8 @@ package com.spe.bebalanced.bebalanced;
 
 import android.annotation.SuppressLint;
 import android.arch.persistence.room.Room;
-import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.DashPathEffect;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -14,7 +12,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Spinner;
-
 import com.androidplot.util.PixelUtils;
 import com.androidplot.xy.CatmullRomInterpolator;
 import com.androidplot.xy.LineAndPointFormatter;
@@ -22,25 +19,19 @@ import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYGraphWidget;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
-import com.google.common.primitives.Ints;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 import com.spe.bebalanced.bebalanced.database.Skill;
 import com.spe.bebalanced.bebalanced.database.SkillRoomDatabase;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
-import java.lang.reflect.Array;
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-
-import io.reactivex.Flowable;
 
 /**
  * Created by Mykola Matsiakh on 08.03.18.
@@ -70,12 +61,12 @@ public class StatisticsActivity extends AppCompatActivity implements
         mSkillRoomDatabase = Room.databaseBuilder(getApplicationContext(),
                 SkillRoomDatabase.class, "skill_database").build();
 
-        mSkillRoomDatabase.skillDao().findByName("Оточення").flatMap(item ->{
-            skillValues.add(item.getValue());
-            skillDates.add(item.getDate());
-            Log.e("Skill value: ", skillValues.toString());
-            return Flowable.fromArray();
-        });
+//        mSkillRoomDatabase.skillDao().findByName("Оточення").flatMap(item ->{
+//            skillValues.add(item.getValue());
+//            skillDates.add(item.getDate());
+//            Log.e("Skill value: ", skillValues.toString());
+//            return Flowable.fromArray();
+//        });
 
        // getSkillValue("Оточення");
         Log.e("DATE IS-->", skillDates.toString());
@@ -185,12 +176,26 @@ public class StatisticsActivity extends AppCompatActivity implements
     }
 
     @SuppressLint("CheckResult")
-    private List<Integer> getSkillValue(String name) {
-        mSkillRoomDatabase.skillDao().findByName(name).flatMap(item ->{
-           skillValues.add(item.getValue());
-           return Flowable.fromArray();
-        });
-        return skillValues;
+    private void getSkillValue(String name) {
+        mSkillRoomDatabase.skillDao().findByName(name)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Skill>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(Skill skill) {
+                        // помальовуй UI
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
     }
 
     @SuppressLint("CheckResult")
