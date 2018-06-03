@@ -11,7 +11,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemSelectedListener;
+
 import com.androidplot.util.PixelUtils;
 import com.androidplot.xy.CatmullRomInterpolator;
 import com.androidplot.xy.LineAndPointFormatter;
@@ -57,85 +64,25 @@ public class StatisticsActivity extends AppCompatActivity implements
         navigationView = findViewById(R.id.navigation);
         navigationView.setOnNavigationItemSelectedListener(this);
         mSpinner = findViewById(R.id.spinner);
-
+        plot = findViewById(R.id.plot);
+        plot.setVisibility(View.GONE);
         mSkillRoomDatabase = Room.databaseBuilder(getApplicationContext(),
                 SkillRoomDatabase.class, "skill_database").build();
-
-//        mSkillRoomDatabase.skillDao().findByName("Оточення").flatMap(item ->{
-//            skillValues.add(item.getValue());
-//            skillDates.add(item.getDate());
-//            Log.e("Skill value: ", skillValues.toString());
-//            return Flowable.fromArray();
-//        });
-
-       // getSkillValue("Оточення");
-        Log.e("DATE IS-->", skillDates.toString());
-        plot = findViewById(R.id.plot);
-
-        // create a couple arrays of y-values to plot:
-        Log.d("VALUE --->", skillValues.toString());
-        final Number[] domainLabels = {1, 2, 3, 6, 7, 8, 9, 10, 13, 14};
-        Number[] series1Numbers = new Integer[]{1,34,2};
-        Number[] series2Numbers = {5, 2, 10, 5, 20, 10, 40, 20, 80, 40};
-
-        // turn the above arrays into XYSeries':
-        // (Y_VALS_ONLY means use the element index as the x value)
-        XYSeries series1 = new SimpleXYSeries(Arrays.asList(series1Numbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
-        XYSeries series2 = new SimpleXYSeries(
-                Arrays.asList(series2Numbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series2");
-
-        LineAndPointFormatter series1Format =
-                new LineAndPointFormatter(this, R.xml.line_point_formatter_with_labels);
-
-        LineAndPointFormatter series2Format =
-                new LineAndPointFormatter(this, R.xml.line_point_formatter_with_labels_2);
-
-        // add an "dash" effect to the series2 line:
-        series2Format.getLinePaint().setPathEffect(new DashPathEffect(new float[] {
-
-                // always use DP when specifying pixel sizes, to keep things consistent across devices:
-                PixelUtils.dpToPix(20),
-                PixelUtils.dpToPix(15)}, 0));
-
-        // just for fun, add some smoothing to the lines:
-        // see: http://androidplot.com/smooth-curves-and-androidplot/
-        series1Format.setInterpolationParams(
-                new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
-
-        series2Format.setInterpolationParams(
-                new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
-
-        // add a new series' to the xyplot:
-        plot.addSeries(series1, series1Format);
-        plot.addSeries(series2, series2Format);
-        plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
-            @Override
-            public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
-                int i = Math.round(((Number) obj).floatValue());
-                return toAppendTo.append(domainLabels[i]);
-            }
-            @Override
-            public Object parseObject(String source, ParsePosition pos) {
-                return null;
+        mSpinner.setOnItemSelectedListener(new OnItemSelectedListener()
+        {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                Log.e("Clicked item is", selectedItem);
+                plot.setVisibility(View.VISIBLE);
+            } // to close the onItemSelected
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                plot.setVisibility(View.GONE);
             }
         });
-
-//        GraphView graph = findViewById(R.id.graph);
-//        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-//                new DataPoint(1, 5)
-//        });
-//        graph.addSeries(series);
-//        Paint paint = new Paint();
-//                paint.setStyle(Paint.Style.STROKE);
-//                paint.setStrokeWidth(3);
-//                paint.setColor(getResources().getColor(R.color.DarkGreen));
-//                paint.setPathEffect(new DashPathEffect(new float[]{8, 5}, 0));
-//                series.setCustomPaint(paint);
-
-//        getSkillValue("Стосунки");
-//        getSkillDate("Стосунки");
-//        Log.d("Array ->",getSkillValue("Стосунки").toString());
-
+        // create a couple arrays of y-values to plot:
+        getSkillValue("Тіло");
     }
 
     @Override
@@ -184,11 +131,15 @@ public class StatisticsActivity extends AppCompatActivity implements
                     @Override
                     public void onSubscribe(Disposable d) {
 
+
                     }
 
                     @Override
                     public void onSuccess(Skill skill) {
                         // помальовуй UI
+                        Log.e("Value is", String.valueOf(skill.getValue()));
+                        drawGraph();
+
                     }
 
                     @Override
@@ -220,5 +171,54 @@ public class StatisticsActivity extends AppCompatActivity implements
     public void onPause() {
         super.onPause();
         overridePendingTransition(0, 0);
+    }
+
+    private void drawGraph() {
+        final Number[] domainLabels = {1, 2, 3, 6, 7, 8, 9, 10, 13, 14};
+        Number[] series1Numbers = new Integer[]{1,34,2};
+        Number[] series2Numbers = {5, 2, 10, 5, 20, 10, 40, 20, 80, 40};
+
+        // turn the above arrays into XYSeries':
+        // (Y_VALS_ONLY means use the element index as the x value)
+        XYSeries series1 = new SimpleXYSeries(Arrays.asList(series1Numbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
+        XYSeries series2 = new SimpleXYSeries(
+                Arrays.asList(series2Numbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series2");
+
+        LineAndPointFormatter series1Format =
+                new LineAndPointFormatter(this, R.xml.line_point_formatter_with_labels);
+
+        LineAndPointFormatter series2Format =
+                new LineAndPointFormatter(this, R.xml.line_point_formatter_with_labels_2);
+
+        // add an "dash" effect to the series2 line:
+        series2Format.getLinePaint().setPathEffect(new DashPathEffect(new float[] {
+
+                // always use DP when specifying pixel sizes, to keep things consistent across devices:
+                PixelUtils.dpToPix(20),
+                PixelUtils.dpToPix(15)}, 0));
+
+        // just for fun, add some smoothing to the lines:
+        // see: http://androidplot.com/smooth-curves-and-androidplot/
+        series1Format.setInterpolationParams(
+                new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
+
+        series2Format.setInterpolationParams(
+                new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
+
+        // add a new series' to the xyplot:
+        plot.addSeries(series1, series1Format);
+        plot.addSeries(series2, series2Format);
+        plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
+            @Override
+            public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+                int i = Math.round(((Number) obj).floatValue());
+                return toAppendTo.append(domainLabels[i]);
+            }
+            @Override
+            public Object parseObject(String source, ParsePosition pos) {
+                return null;
+            }
+        });
+
     }
 }

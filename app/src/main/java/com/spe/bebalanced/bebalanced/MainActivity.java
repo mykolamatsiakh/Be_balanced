@@ -61,14 +61,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @NonNull
     private ArrayList<RadarHolder> mData = new ArrayList<RadarHolder>() {
         {
-            add(new RadarHolder("Тіло", 5));
-            add(new RadarHolder("Оточення", 5));
-            add(new RadarHolder("Стосунки", 5));
-            add(new RadarHolder("Кар'єра", 5));
-            add(new RadarHolder("Гроші", 5));
-            add(new RadarHolder("Саморозвиток", 5));
-            add(new RadarHolder("Сенс", 5));
-            add(new RadarHolder("Відпочинок", 5));
+            add(new RadarHolder("Тіло", 2));
+            add(new RadarHolder("Оточення", 2));
+            add(new RadarHolder("Стосунки", 2));
+            add(new RadarHolder("Кар'єра", 2));
+            add(new RadarHolder("Гроші", 2));
+            add(new RadarHolder("Саморозвиток", 2));
+            add(new RadarHolder("Сенс", 2));
+            add(new RadarHolder("Відпочинок", 2));
 
         }
     };
@@ -83,24 +83,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
         mSkillRoomDatabase = Room.databaseBuilder(getApplicationContext(),
                 SkillRoomDatabase.class, "skill_database").build();
-        Flowable<List<Skill>> skill =  mSkillRoomDatabase.skillDao().getAll();
-        Log.d("BEM", skill.toString());
+        //Flowable<List<Skill>> skill = mSkillRoomDatabase.skillDao().getAll();
+       // Log.d("BEM", skill.toString());
         String[] array = getResources().getStringArray(R.array.advices);
         final List<String> mainParams = Arrays.asList(
             "Тіло",
             "Оточення",
             "Стосунки", "Кар'єра", "Гроші", "Саморозвиток", "Сенс", "Відпочинок");
 
-        mSkillRoomDatabase.skillDao().getAll().flatMap(list -> {
-            Skill[] skills = new Skill[list.size()];
-            list.toArray(skills);
-            return Flowable.fromArray(skills);
-        }).subscribe(item -> {
-            // Now you can do with each item.
-            Log.d("Item is", item.toString());
 
-        });
-        
 
         final List<String> resultOptions = Arrays.asList(array);
         mRadarView = findViewById(R.id.radar);

@@ -32,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
 //                checkFirstRun();
                 finish();
-                Intent intent = new Intent(SplashActivity.this, SignInActivity.class);
+                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         }, SPLASH_TIME_OUT);

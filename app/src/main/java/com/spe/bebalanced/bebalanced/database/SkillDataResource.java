@@ -27,12 +27,12 @@ public class SkillDataResource implements iSkillDataResource{
 
     @Override
     public Flowable<List<Skill>> getAll() {
-        return mSkillDao.getAll();
+        return mSkillDao.getAll().toFlowable();
     }
 
     @Override
     public Flowable<Skill> findByName(String name) {
-        return mSkillDao.findByName(name);
+        return mSkillDao.findByName(name).toFlowable();
     }
 
     @Override
