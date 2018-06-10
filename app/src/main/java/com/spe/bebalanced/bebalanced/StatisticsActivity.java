@@ -13,12 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
-
+import android.widget.Spinner;
 import com.androidplot.util.PixelUtils;
 import com.androidplot.xy.CatmullRomInterpolator;
 import com.androidplot.xy.LineAndPointFormatter;
@@ -37,7 +33,6 @@ import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -138,7 +133,7 @@ public class StatisticsActivity extends AppCompatActivity implements
                     public void onSuccess(Skill skill) {
                         // помальовуй UI
                         Log.e("Value is", String.valueOf(skill.getValue()));
-                        drawGraph();
+                        drawGraph(skill);
 
                     }
 
@@ -148,17 +143,6 @@ public class StatisticsActivity extends AppCompatActivity implements
                     }
                 });
     }
-
-    @SuppressLint("CheckResult")
-    private List<String> getSkillDate(String name){
-        mSkillRoomDatabase.skillDao().findByName(name).subscribe(item -> {
-            // Now you can do with each item.
-            Log.d("Item is", item.toString());
-            skillDates.add(item.getDate());
-        });
-        return skillDates;
-    }
-
 
     @Override
     protected void onStart() {
@@ -173,16 +157,16 @@ public class StatisticsActivity extends AppCompatActivity implements
         overridePendingTransition(0, 0);
     }
 
-    private void drawGraph() {
-        final Number[] domainLabels = {1, 2, 3, 6, 7, 8, 9, 10, 13, 14};
-        Number[] series1Numbers = new Integer[]{1,34,2};
+    private void drawGraph(Skill skill) {
+        final Number[] domainLabels = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+//        Number[] series1Numbers = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
         Number[] series2Numbers = {5, 2, 10, 5, 20, 10, 40, 20, 80, 40};
 
         // turn the above arrays into XYSeries':
         // (Y_VALS_ONLY means use the element index as the x value)
-        XYSeries series1 = new SimpleXYSeries(Arrays.asList(series1Numbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
-        XYSeries series2 = new SimpleXYSeries(
-                Arrays.asList(series2Numbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series2");
+        XYSeries series1 = new SimpleXYSeries(skill.getValue(), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
+//        XYSeries series2 = new SimpleXYSeries(
+//                Arrays.asList(series2Numbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series2");
 
         LineAndPointFormatter series1Format =
                 new LineAndPointFormatter(this, R.xml.line_point_formatter_with_labels);
@@ -207,7 +191,8 @@ public class StatisticsActivity extends AppCompatActivity implements
 
         // add a new series' to the xyplot:
         plot.addSeries(series1, series1Format);
-        plot.addSeries(series2, series2Format);
+//        plot.addSeries(series2, series2Format);
+
         plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
             @Override
             public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {

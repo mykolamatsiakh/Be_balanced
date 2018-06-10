@@ -50,13 +50,6 @@
         app:layout_constraintBottom_toTopOf="@id/navigation"
         app:showButtonBar="true" >
 
-        <!--<Button-->
-            <!---->
-            <!--android:layout_width="80dp"-->
-            <!--android:layout_height="80dp"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--android:layout_weight="1" />-->
-
     </com.ultramegasoft.radarchart.RadarEditWidget>
 
     <android.support.design.widget.BottomNavigationView

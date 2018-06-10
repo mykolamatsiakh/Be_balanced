@@ -4,7 +4,11 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Mykola Matsiakh on 21.04.18.
@@ -13,18 +17,18 @@ import android.support.annotation.NonNull;
 @Entity(tableName = "skills_table")
 public class Skill {
 
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    private int mId;
-
+    @NonNull
+    @PrimaryKey
     @ColumnInfo(name = "name")
     private String mName;
 
     @ColumnInfo(name = "value")
-    private int mValue;
+    @TypeConverters(SkillTypeConventer.class)
+    private List<Integer> mValue;
 
     @ColumnInfo(name = "date")
-    private String mDate;
+    @TypeConverters(SkillTypeConventer.class)
+    private List<Integer> mDate;
 
     public String getName() {
         return mName;
@@ -34,29 +38,20 @@ public class Skill {
         mName = name;
     }
 
-    public int getValue() {
+    public List<Integer> getValue() {
         return mValue;
     }
 
-    public void setValue(int value) {
+    public void setValue(List<Integer> value) {
         mValue = value;
     }
 
-    public String getDate() {
+    public List<Integer> getDate() {
         return mDate;
     }
 
-    public void setDate(String date) {
+    public void setDate(List<Integer> date) {
         mDate = date;
-    }
-
-    @NonNull
-    public int getId() {
-        return mId;
-    }
-
-    public void setId(@NonNull int id) {
-        mId = id;
     }
 
     public Skill() {
@@ -64,10 +59,10 @@ public class Skill {
     }
 
     @Ignore
-    public Skill(String name, int value, String date) {
+    public Skill(String name) {
         mName = name;
-        mValue = value;
-        mDate = date;
+        mValue = new ArrayList<>();
+        mDate = new ArrayList<>();
     }
 
     @Override
